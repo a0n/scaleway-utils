@@ -31,7 +31,7 @@ fi
 if [ ! -f ${TINCPATH}/hosts/${TINCNAME} ]; then
 	echo \"Subnet = ${TINCIP}/32\" > ${TINCPATH}/hosts/${TINCNAME}; \
 	tincd -n $VPNNAME -K4096 \
-fi \
+fi
 \
 echo '#!/bin/sh' > ${TINCPATH}/tinc-up; \
 echo 'ifconfig \$INTERFACE '$TINCIP' netmask 255.255.255.0' >> ${TINCPATH}/tinc-up; \
