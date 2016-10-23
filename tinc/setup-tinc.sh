@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Based on http://xmodulo.com/how-to-install-and-configure-tinc-vpn.html
 
@@ -12,7 +12,7 @@ VPNNAME=scaleway
 TINCPATH=/etc/tinc/$VPNNAME
 MYIP=$(ip addr show eth0 | grep -o 'inet [^/]*' | cut -d' ' -f 2)
 
-apt-get install tinc
+dpkg -l tinc > /dev/null || apt-get install tinc
 
 mkdir -p ${TINCPATH}/hosts
 
