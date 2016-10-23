@@ -21,12 +21,12 @@ ssh -l root $HOST "export PS4=\"\[\033[32;1m++++\[\033[0m \"; \
 set -ex; \
 apt-get install -y tinc; \
 mkdir -p ${TINCPATH}/hosts; \
-if [ ! -f ${TINCPATH}/tinc.conf ]; then \
+if [ ! -f ${TINCPATH}/tinc.conf ]; then
 	echo \"Name = ${TINCNAME}\" > ${TINCPATH}/tinc.conf; \
 	echo \"AddressFamily = ipv4\" >> ${TINCPATH}/tinc.conf; \
 	echo \"Interface = tun0\" >> ${TINCPATH}/tinc.conf; \
 	echo \"ConnectTo = $MYNAME\" >> ${TINCPATH}/tinc.conf
-fi \
+fi
 \
 if [ ! -f ${TINCPATH}/hosts/${TINCNAME} ]; then
 	echo \"Subnet = ${TINCIP}/32\" > ${TINCPATH}/hosts/${TINCNAME}; \
