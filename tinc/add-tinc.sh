@@ -21,7 +21,7 @@ rsync -Pavvzessh /var/cache/apt/archives/{tinc_*.deb,liblzo2-*.deb} root@${HOST}
 
 ssh -l root $HOST "export PS4=\"\[\033[32;1m++++\[\033[0m \" ;\
 set -ex;\
-dpkg -l tinc > /dev/null || dpkg -i /tmp/liblzo2-*.deb /tmp/tinc_*.deb;\
+apt-get install -y tinc;\
 \
 mkdir -p ${TINCPATH}/hosts;\
 \
