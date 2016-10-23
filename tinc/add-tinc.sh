@@ -19,7 +19,7 @@ MYNAME=$(cat $TINCPATH/tinc.conf | awk '/Name/ { print $3}')
 
 # rsync -Pavvzessh /var/cache/apt/archives/{tinc_*.deb,liblzo2-*.deb} root@${HOST}:/tmp
 
-ssh -l root $HOST "$( cat <<'EOT'
+ssh -l root $HOST <<'EOT'
 export PS4="\[\033[32;1m++++\[\033[0m "
 set -ex
 apt-get install -y tinc
@@ -49,17 +49,15 @@ chmod +x ${TINCPATH}/tinc-{up,down}
 
 modprobe tun
 EOT
-)"
 
 rsync -Pavvzessh ${TINCPATH}/hosts/$MYNAME $HOST:${TINCPATH}/hosts/
 rsync -Pavvzessh $HOST:${TINCPATH}/hosts/${TINCNAME} ${TINCPATH}/hosts/
 tincd -n $VPNNAME -k HUP || tincd -n $VPNNAME
 
-ssh -l root $HOST "$( cat <<'EOT'
+ssh -l root $HOST <<'EOT'
 tincd -n $VPNNAME -k HUP || tincd -n $VPNNAME
 GATEWAY=\$(route -n | grep '^0.0.0.0 .*eth0' | awk '{print \$2}')
 route add -host $MYIP gw \$GATEWAY
 route add default gw $MYTINCIP
 route del default gw \$GATEWAY
 EOT
-)"
