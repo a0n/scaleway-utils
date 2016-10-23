@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Based on http://xmodulo.com/how-to-install-and-configure-tinc-vpn.html
 
@@ -19,7 +19,7 @@ MYNAME=$(cat $TINCPATH/tinc.conf | awk '/Name/ { print $3}')
 
 rsync -Pavvzessh /var/cache/apt/archives/{tinc_*.deb,liblzo2-*.deb} root@${HOST}:/tmp
 
-ssh -l root $HOST <<EOF
+ssh -l root $HOST "$( cat <<'EOT'
 export PS4="\[\033[32;1m++++\[\033[0m "
 set -ex
 dpkg -l tinc > /dev/null || dpkg -i /tmp/liblzo2-*.deb /tmp/tinc_*.deb
@@ -46,16 +46,18 @@ echo 'ifconfig \$INTERFACE down' >> ${TINCPATH}/tinc-down
 chmod +x ${TINCPATH}/tinc-{up,down}
 
 modprobe tun
-EOF
+EOT
+)"
 
 rsync -Pavvzessh ${TINCPATH}/hosts/$MYNAME $HOST:${TINCPATH}/hosts/
 rsync -Pavvzessh $HOST:${TINCPATH}/hosts/${TINCNAME} ${TINCPATH}/hosts/
 tincd -n $VPNNAME -k HUP || tincd -n $VPNNAME
 
-ssh -l root $HOST <<EOF
+ssh -l root $HOST "$( cat <<'EOT'
 tincd -n $VPNNAME -k HUP || tincd -n $VPNNAME
 GATEWAY=\$(route -n | grep '^0.0.0.0 .*eth0' | awk '{print \$2}')
 route add -host $MYIP gw \$GATEWAY
 route add default gw $MYTINCIP
 route del default gw \$GATEWAY
-EOF
+EOT
+)"
