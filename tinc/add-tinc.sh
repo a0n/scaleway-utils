@@ -19,14 +19,14 @@ MYNAME=$(cat $TINCPATH/tinc.conf | awk '/Name/ { print $3}')
 
 # rsync -Pavvzessh /var/cache/apt/archives/{tinc_*.deb,liblzo2-*.deb} root@${HOST}:/tmp
 
-ssh -l root $HOST <<'EOT'
+ssh -l root $HOST <<"EOT"
 export PS4="\[\033[32;1m++++\[\033[0m "
 set -ex
 apt-get install -y tinc
 
 # dpkg -l tinc > /dev/null || dpkg -i /tmp/liblzo2-*.deb /tmp/tinc_*.deb
 
-mkdir -p ${TINCPATH}/hosts
+mkdir -p $TINCPATH/hosts
 
 if [ ! -f ${TINCPATH}/tinc.conf ]; then
 	echo "Name = ${TINCNAME}" > ${TINCPATH}/tinc.conf
