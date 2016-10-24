@@ -17,12 +17,12 @@ MYTINCIP=$(ip addr show tun0 | grep -o 'inet [^/]*' | cut -d' ' -f 2)
 MYIP=$(ip addr show eth0 | grep -o 'inet [^/]*' | cut -d' ' -f 2)
 MYNAME=$(cat $TINCPATH/tinc.conf | awk '/Name/ { print $3}')
 
-rsync -Pavvzessh /var/cache/apt/archives/{tinc_*.deb,liblzo2-*.deb} root@${HOST}:/tmp
+apt-get install --reinstall tinc
 
 ssh -l root $HOST <<EOF
 export PS4="\[\033[32;1m++++\[\033[0m "
 set -ex
-dpkg -l tinc > /dev/null || dpkg -i /tmp/liblzo2-*.deb /tmp/tinc_*.deb
+apt-get install -y tinc
 
 mkdir -p ${TINCPATH}/hosts
 
