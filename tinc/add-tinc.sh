@@ -17,8 +17,6 @@ MYTINCIP=$(ip addr show tun0 | grep -o 'inet [^/]*' | cut -d' ' -f 2)
 MYIP=$(ip addr show eth0 | grep -o 'inet [^/]*' | cut -d' ' -f 2)
 MYNAME=$(cat $TINCPATH/tinc.conf | awk '/Name/ { print $3}')
 
-apt-get install --reinstall tinc
-
 ssh -l root $HOST <<EOF
 export PS4="\[\033[32;1m++++\[\033[0m "
 set -ex
